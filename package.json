@@ -8,7 +8,17 @@
     "demo": "node demo",
     "postinstall": "npm run build"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/OsirisX3R0/battleship.git"
+  },
   "keywords": [],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/OsirisX3R0/battleship/issues"
+  },
+  "devDependencies": {
+    "typescript": "^4.6.2"
+  }
 }
