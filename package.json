@@ -5,8 +5,7 @@
   "main": "index.js",
   "scripts": {
     "build": "tsc",
-    "demo": "node demo",
-    "postinstall": "npm run build"
+    "demo": "node demo"
   },
   "repository": {
     "type": "git",
@@ -20,5 +19,8 @@
   },
   "devDependencies": {
     "typescript": "^4.6.2"
+  },
+  "dependencies": {
+    "@types/node": "^20.11.20"
   }
 }
