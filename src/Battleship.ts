@@ -4,17 +4,17 @@ import { SpaceCoords } from './Board'
 import GameState from "./enums/GameState"
 import ShipTypes from "./enums/ShipTypes"
 
-export type BoardValue = number | string
-export type BoardSetup = BoardValue[][]
+// export type BoardValue = number | string
+// export type BoardSetup = BoardValue[][]
 
-export interface Space {
-  rowIndex: number,
-  spaceIndex: number,
-  value: BoardValue
-}
+// export interface Space {
+//   rowIndex: number,
+//   spaceIndex: number,
+//   value: BoardValue
+// }
 
-export type Row = Space[]
-export type PlayerBoard = Row[]
+// export type Row = Space[]
+// export type PlayerBoard = Row[]
 
 // enum GameState {
 //   WAITING_PLAYER, // waiting for player 2 to join
@@ -25,7 +25,8 @@ export type PlayerBoard = Row[]
 //   PLAYER2_WIN, // player 2 wins
 // }
 
-class Battleship extends EventEmitter{
+/** Represents the game Battleship */
+class Battleship extends EventEmitter {
   private _player1: Player;
   private _player2: Player;
   private _state: GameState;
@@ -49,7 +50,7 @@ class Battleship extends EventEmitter{
     return player === 1 ? this._player1.board : this._player2.board
   }
 
-  setShip(player: 1 | 2, ship: ShipTypes, spaces: SpaceCoords[]) {    
+  setShip(player: 1 | 2, ship: ShipTypes, spaces: SpaceCoords) {    
     player === 1 
     ? this._player1.setShip(ship, spaces)
     : this._player2.setShip(ship, spaces)

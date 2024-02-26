@@ -11,26 +11,31 @@ export interface Space {
   value: BoardValue
 }
 
-export type Row = Space[]
-export type Spaces = Row[]
+export type RowLetter = 'A' | 'B' | 'C' | 'D' | 'E' | 'F' | 'G' | 'H' | 'I' | 'J'
 
-export interface SpaceCoords {
-  rowInd: number,
-  spaceInd: number
+export type Row = Space[]
+export type Spaces = { 
+  [key in RowLetter]?: Space
 }
+
+export type SpaceCoords = string[] //{
+//   rowInd: number,
+//   spaceInd: number
+// }
 
 class Board {
   private _spaces: Spaces
 
   static generateEmptyBoard() {
-    let board: Spaces = []
+    let board: Spaces = {}
 
-    for(let rowIndex = 0; rowIndex < 10; rowIndex++) {
-      board.push([])
-      for(let spaceIndex = 0; spaceIndex < 10; spaceIndex++) {
-        board[rowIndex].push({
-          rowIndex,
-          spaceIndex,
+    for(let row = 0; row < 10; row++) {
+      let letter = String.fromCharCode(row + 65)
+      board[letter] = []
+      for(let space = 0; space < 10; space++) {
+        board[letter].push({
+          rowIndex: row,
+          spaceIndex: space,
           value:0
         })
       }
@@ -47,12 +52,12 @@ class Board {
     return this._spaces
   }
 
-  setShip(type: ShipTypes, spaces: SpaceCoords[]) {
+  setShip(type: ShipTypes, spaces: SpaceCoords) {
     let value: string = ShipTypes[type]
 
     for(let coords of spaces) {
-      let { rowInd, spaceInd } = coords
-      this._spaces[rowInd][spaceInd].value = value
+      let [row, space] = coords.split('')
+      this._spaces[row][space].value = value
     }
   }
 }

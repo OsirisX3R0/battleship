@@ -1,5 +1,5 @@
-import { BoardSetup, PlayerBoard } from "./Battleship";
-import Board, {Orientation, Spaces, SpaceCoords} from "./Board";
+import {  } from "./Battleship";
+import Board, {BoardSetup, Orientation, Spaces, SpaceCoords} from "./Board";
 import Ship from "./Ship";
 import ShipTypes from "./enums/ShipTypes";
 
@@ -72,14 +72,14 @@ class Player {
   }
 
   get board() {
-    return this._board
+    return this._board.spaces
   }
 
   get ships() {
     return this._ships
   }
 
-  setShip(type: ShipTypes, spaces: SpaceCoords[]) {
+  setShip(type: ShipTypes, spaces: SpaceCoords) {
     for(let ship of this.ships) {
       if (ship.type === type)
         throw new Error('A ship of this type has already been placed on your board')

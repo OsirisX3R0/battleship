@@ -9,7 +9,7 @@ class Ship {
   private _type: ShipTypes
   private _name: string
   private _remaining: number
-  private _spaces: SpaceCoords[]
+  private _spaces: SpaceCoords
 
   static shipNames: ShipMap<string> = {
     [ShipTypes.C]: "Carrier",
@@ -27,7 +27,7 @@ class Ship {
     [ShipTypes.U]: 2,
   };
 
-  constructor(type: ShipTypes, spaces: SpaceCoords[]) {
+  constructor(type: ShipTypes, spaces: SpaceCoords) {
     this._type = type
     this._name = Ship.shipNames[type]
     this._remaining = Ship.startingShips[type]
