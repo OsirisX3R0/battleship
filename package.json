@@ -1,0 +1,14 @@
+{
+  "name": "battleship",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc",
+    "demo": "node demo",
+    "postinstall": "npm run build"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
