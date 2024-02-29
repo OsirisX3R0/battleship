@@ -50,6 +50,7 @@ class Board {
   /** Creates an instance of `Board` */
   constructor() {
     this._spaces = Board.generateEmptyBoard()
+    this._ships = {}
   }
 
   /** The players board */
@@ -76,10 +77,10 @@ class Board {
 
   move(space: PossibleSpaces) {
     let [letter, number] = Board.parseSpace(space)
-    
+
     for(let ship of Object.keys(this._ships)) {
       if (this._ships[ship].includes(space)) {
-        this._ships[ship] = this._ships[ship].filter((s: PossibleSpaces) => s === space)
+        this._ships[ship] = this._ships[ship].filter((s: PossibleSpaces) => s !== space)
         this._spaces[letter][number] = SpaceState.HIT
 
         return

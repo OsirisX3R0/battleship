@@ -46,7 +46,7 @@ class Battleship extends EventEmitter {
   }
 
   /** Creates a new player */
-  createPlayer(player: PlayerNumber, name: string) {
+  newPlayer(player: PlayerNumber, name: string) {
     this._players[player] = new Player(name)
   }
 
