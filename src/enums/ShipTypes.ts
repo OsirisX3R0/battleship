@@ -1,9 +1,9 @@
 enum ShipTypes {
-  C = 'C', // Carrier
-  B = 'B', // Battleship
-  D = 'D', // Destroyer
-  S = 'S', // Submarine
-  U = 'U' // Cruiser
+  CARRIER,
+  BATTLESHIP,
+  DESTROYER,
+  SUBMARINE,
+  CRUISER
 }
 
 export default ShipTypes

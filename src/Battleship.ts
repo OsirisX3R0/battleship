@@ -4,37 +4,20 @@ import { SpaceCoords } from './Board'
 import GameState from "./enums/GameState"
 import ShipTypes from "./enums/ShipTypes"
 
-// export type BoardValue = number | string
-// export type BoardSetup = BoardValue[][]
+export type PlayerNumber = 1 | 2
 
-// export interface Space {
-//   rowIndex: number,
-//   spaceIndex: number,
-//   value: BoardValue
-// }
-
-// export type Row = Space[]
-// export type PlayerBoard = Row[]
-
-// enum GameState {
-//   WAITING_PLAYER, // waiting for player 2 to join
-//   SETTING_SHIPS, // waiting for both players to finish setting ships
-//   PLAYER1_TURN, // player 1's turn
-//   PLAYER2_TURN, // player 2's turn
-//   PLAYER1_WIN, // player 1 wins
-//   PLAYER2_WIN, // player 2 wins
-// }
+export type Players = {
+  [key in PlayerNumber]?: Player
+}
 
 /** Represents the game Battleship */
 class Battleship extends EventEmitter {
-  private _player1: Player;
-  private _player2: Player;
+  private _players: Players
   private _state: GameState;
   
   constructor() {
     super()
-    this._player1 = new Player('Player 1')
-    this._player2 = new Player('Player 2')
+    this._players = {}
     this._state = GameState.WAITING_PLAYER
   }
 
@@ -42,18 +25,20 @@ class Battleship extends EventEmitter {
     return this._state
   }
 
-  getPlayer(player: 1 | 2) {
-    return player === 1 ? this._player1 : this._player2
+  getPlayer(player: PlayerNumber) {
+    return this._players[player]
   }
 
-  getPlayerBoard(player: 1 | 2) {
-    return player === 1 ? this._player1.board : this._player2.board
+  getPlayerBoard(player: PlayerNumber) {
+    return this._players[player].board
   }
 
-  setShip(player: 1 | 2, ship: ShipTypes, spaces: SpaceCoords) {    
-    player === 1 
-    ? this._player1.setShip(ship, spaces)
-    : this._player2.setShip(ship, spaces)
+  createPlayer(player: PlayerNumber, name: string) {
+    this._players[player] = new Player(name)
+  }
+
+  setShip(player: PlayerNumber, ship: ShipTypes, spaces: SpaceCoords) {
+    this._players[player].setShip(ship, spaces)
   }
 }
 
