@@ -25,6 +25,15 @@ class Player {
     return this._board.spaces
   }
 
+  /** How many ships are set on the players board */
+  get shipsSet(): number {
+    return Object.keys(this._board.ships).length
+  }
+
+  get allShipsSunk(): boolean {
+    return Object.values(this._board.ships).every(spaces => spaces.length === 0)
+  }
+
   /** The players ship counts */
   get shipCounts(): ShipCounts {
     return this._board.shipCounts
