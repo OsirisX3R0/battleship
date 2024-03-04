@@ -4,12 +4,7 @@ import { ShipCounts, SpaceCoords, Spaces } from './Board'
 import GameState from "./enums/GameState"
 import ShipTypes from "./enums/ShipTypes"
 import PossibleSpaces from './enums/PossibleSpaces'
-
-export type PlayerNumber = 1 | 2
-
-export type Players = {
-  [key in PlayerNumber]?: Player
-}
+import Players, { PlayerNumber } from './Players'
 
 /** Represents the game Battleship */
 class Battleship extends EventEmitter {
@@ -21,7 +16,7 @@ class Battleship extends EventEmitter {
   /** Creates an instance of `Battleship` */
   constructor() {
     super()
-    this._players = {}
+    this._players = new Players()
     this._state = GameState.AWAITING_PLAYERS
   }
 
@@ -32,7 +27,7 @@ class Battleship extends EventEmitter {
 
   /** The number of players in the game */
   get playerCount(): number {
-    return Object.keys(this._players).length
+    return this._players.count
   }
 
   /** Updates state (if applicable) after:
@@ -45,14 +40,14 @@ class Battleship extends EventEmitter {
       case GameState.PLAYER1_TURN:
       case GameState.PLAYER2_TURN: {
         // Player 1 has won
-        if (this._players['2'].allShipsSunk) {
+        if (this._players.get(2).allShipsSunk) {
           this._state = GameState.PLAYER1_WIN
     
           break
         }
     
         // Player 2 has won
-        if (this._players['1'].allShipsSunk) {
+        if (this._players.get(1).allShipsSunk) {
           this._state = GameState.PLAYER2_WIN
     
           break
@@ -74,7 +69,7 @@ class Battleship extends EventEmitter {
       }
       case GameState.SETTING_SHIPS: {
         // It's player 1 turn
-        if (Object.values(this._players).every(player => player.shipsSet === 5)){
+        if (this._players.allShipsSet){
           this._state = GameState.PLAYER1_TURN
 
           break
@@ -93,17 +88,17 @@ class Battleship extends EventEmitter {
 
   /** Retrieves a player from the game */
   getPlayer(player: PlayerNumber): Player {
-    return this._players[player]
+    return this._players.get(player)
   }
 
   /** Retrieves a players board */
   getPlayerBoard(player: PlayerNumber): Spaces {
-    return this._players[player].board
+    return this._players.get(player).board
   }
 
   /** Retrieves a players ship counts */
   getPlayerShipCounts(player: PlayerNumber): ShipCounts {
-    return this._players[player].shipCounts
+    return this._players.get(player).shipCounts
   }
 
   /** Creates a new player */
@@ -111,14 +106,14 @@ class Battleship extends EventEmitter {
     if (this._state !== GameState.AWAITING_PLAYERS || this.playerCount === 2)
       throw new Error('All players have been added')
 
-    this._players[player] = new Player(name)
+    this._players.add(player, name)
 
     this.refreshState()
   }
 
   /** Sets a ship on a players board */
   set(player: PlayerNumber, ship: ShipTypes, spaces: SpaceCoords) {
-    this._players[player].set(ship, spaces)
+    this._players.get(player).set(ship, spaces)
 
     this.refreshState()
   }
@@ -129,7 +124,7 @@ class Battleship extends EventEmitter {
    * @param space Space to attack
    */
   move(player: PlayerNumber, space: PossibleSpaces) {
-    this._players[player].move(space)
+    this._players.get(player).move(space)
 
     this.refreshState()
   }
