@@ -18,6 +18,7 @@ class Battleship extends EventEmitter {
     super()
     this._players = new Players()
     this._state = GameState.AWAITING_PLAYERS
+    this.emit('players:awaiting')
   }
 
   /** Current state of the game itself */
@@ -42,6 +43,7 @@ class Battleship extends EventEmitter {
         // Player 1 has won
         if (this._players.get(2).allShipsSunk) {
           this._state = GameState.PLAYER1_WIN
+          this.emit('win:player', 1)
     
           break
         }
@@ -49,6 +51,7 @@ class Battleship extends EventEmitter {
         // Player 2 has won
         if (this._players.get(1).allShipsSunk) {
           this._state = GameState.PLAYER2_WIN
+          this.emit('win:player', 2)
     
           break
         }
@@ -56,6 +59,7 @@ class Battleship extends EventEmitter {
         // It's player 1 turn
         if (this._state === 'PLAYER2_TURN'){
           this._state = GameState.PLAYER1_TURN
+          this.emit('turn:player', 1)
     
           break
         }
@@ -63,6 +67,7 @@ class Battleship extends EventEmitter {
         // It's player 2 turn
         if (this._state === 'PLAYER1_TURN'){
           this._state = GameState.PLAYER2_TURN
+          this.emit('turn:player', 2)
     
           break
         }
@@ -71,18 +76,23 @@ class Battleship extends EventEmitter {
         // It's player 1 turn
         if (this._players.allShipsSet){
           this._state = GameState.PLAYER1_TURN
-
-          break
+          this.emit('set:allships')
+          this.emit('turn:player', 1)
         }
+
+        break
       }
       case GameState.AWAITING_PLAYERS: {
         // All ships have been set
         if (this.playerCount === 2){
           this._state = GameState.SETTING_SHIPS
-          
-          break
+          this.emit('added:allplayers')
         }
+          
+        break
       }
+      default:
+        this._state = this._state
     }
   }
 
@@ -107,6 +117,7 @@ class Battleship extends EventEmitter {
       throw new Error('All players have been added')
 
     this._players.add(player, name)
+    this.emit(`added:player`, player)
 
     this.refreshState()
   }
@@ -124,7 +135,11 @@ class Battleship extends EventEmitter {
    * @param space Space to attack
    */
   move(player: PlayerNumber, space: PossibleSpaces) {
+    const attackingPlayer = player === 1 ? 2 : 1
+    
     this._players.get(player).move(space)
+
+    this.emit("turn:player:done", attackingPlayer)
 
     this.refreshState()
   }
