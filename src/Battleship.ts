@@ -16,9 +16,7 @@ class Battleship extends EventEmitter {
   /** Creates an instance of `Battleship` */
   constructor() {
     super()
-    this._players = new Players()
-    this._state = GameState.AWAITING_PLAYERS
-    this.emit('players:awaiting')
+    this.init()
   }
 
   /** Current state of the game itself */
@@ -29,6 +27,13 @@ class Battleship extends EventEmitter {
   /** The number of players in the game */
   get playerCount(): number {
     return this._players.count
+  }
+
+  /** Initializes the game */
+  init() {
+    this._players = new Players()
+    this._state = GameState.AWAITING_PLAYERS
+    this.emit('players:awaiting')
   }
 
   /** Updates state (if applicable) after:
@@ -142,6 +147,11 @@ class Battleship extends EventEmitter {
     this.emit("turn:player:done", attackingPlayer)
 
     this.refreshState()
+  }
+
+  /** Resets the game to start anew */
+  reset() {
+    this.init()
   }
 }
 
