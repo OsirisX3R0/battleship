@@ -43,6 +43,14 @@ class Player {
     this._board.set(type, spaces)
   }
 
+  check(space: PossibleSpace) {
+    try {
+      this._board.check(space)
+    } catch (err) {
+      throw err
+    }
+  }
+
   move(space: PossibleSpace) {
     return this._board.move(space)
   }

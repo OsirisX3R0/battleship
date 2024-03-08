@@ -75,6 +75,19 @@ class Board {
     this._ships[type] = spaces
   }
 
+  check(space: PossibleSpace) {
+    let [letter, number] = Board.parseSpace(space)
+    if (
+      letter < 'A' || letter > 'J' ||
+      number < '1' || number > '10'
+    ) {
+      throw new Error('Invalid space; must be [A-J][1-10]')
+    }
+
+    if (this._spaces[letter][number] !== SpaceState.EMPTY)
+      throw new Error('This move has already been made')
+  }
+
   move(space: PossibleSpace): SpaceState {
     let [letter, number] = Board.parseSpace(space)
     let result = SpaceState.MISS

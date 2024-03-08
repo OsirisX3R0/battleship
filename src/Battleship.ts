@@ -139,6 +139,9 @@ class Battleship extends EventEmitter {
    * @param space Space to attack
    */
   move(player: PlayerNumber, space: PossibleSpace) {
+    try {
+    this._players.get(player).check(space)
+
     const attackingPlayer = player === 1 ? 2 : 1
 
     this.emit('turn:player:attack', attackingPlayer, space)
@@ -148,6 +151,9 @@ class Battleship extends EventEmitter {
     this.emit("turn:player:done", result, attackingPlayer, space)
 
     this.refreshState()
+    } catch (err) {
+      throw err
+    }
   }
 
   /** Resets the game to start anew */
