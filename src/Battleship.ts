@@ -1,9 +1,8 @@
 import { EventEmitter } from 'events'
 import Player from "./Player"
-import { ShipCounts, SpaceCoords, Spaces } from './Board'
+import { PossibleSpace, ShipCounts, SpaceCoords, Spaces } from './Board'
 import GameState from "./enums/GameState"
 import ShipTypes from "./enums/ShipTypes"
-import PossibleSpaces from './enums/PossibleSpaces'
 import Players, { PlayerNumber } from './Players'
 
 /** Represents the game Battleship */
@@ -139,7 +138,7 @@ class Battleship extends EventEmitter {
    * @param player Player being attacked
    * @param space Space to attack
    */
-  move(player: PlayerNumber, space: PossibleSpaces) {
+  move(player: PlayerNumber, space: PossibleSpace) {
     const attackingPlayer = player === 1 ? 2 : 1
 
     this.emit('turn:player:attack', attackingPlayer, space)

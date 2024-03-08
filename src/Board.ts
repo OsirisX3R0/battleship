@@ -1,9 +1,9 @@
-import PossibleSpaces from "./enums/PossibleSpaces"
 import ShipTypes from "./enums/ShipTypes"
 import SpaceState from "./enums/SpaceState"
 
 export type RowLetter = 'A' | 'B' | 'C' | 'D' | 'E' | 'F' | 'G' | 'H' | 'I' | 'J'
 export type ColumnNumber = '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9' | '10'
+export type PossibleSpace = `${RowLetter}${ColumnNumber}`
 export type Row = {
   [key in ColumnNumber]?: SpaceState
 }
@@ -11,7 +11,7 @@ export type Spaces = {
   [key in RowLetter]?: Row
 }
 
-export type SpaceCoords = PossibleSpaces[]
+export type SpaceCoords = PossibleSpace[]
 export type Ships = {
   [key in ShipTypes]?: SpaceCoords
 }
@@ -43,7 +43,7 @@ class Board {
     return board
   }
 
-  static parseSpace(space: PossibleSpaces) {
+  static parseSpace(space: PossibleSpace) {
     return [space.substring(0, 1), space.substring(1)]
   }
 
@@ -75,7 +75,7 @@ class Board {
     this._ships[type] = spaces
   }
 
-  move(space: PossibleSpaces): SpaceState {
+  move(space: PossibleSpace): SpaceState {
     let [letter, number] = Board.parseSpace(space)
     let result = SpaceState.MISS
     let done = false
@@ -84,7 +84,7 @@ class Board {
       if (done) continue
       
       if (this._ships[ship].includes(space)) {
-        this._ships[ship] = this._ships[ship].filter((s: PossibleSpaces) => s !== space)
+        this._ships[ship] = this._ships[ship].filter((s: PossibleSpace) => s !== space)
         result = SpaceState.HIT
         done = true
       }

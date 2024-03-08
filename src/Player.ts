@@ -1,5 +1,4 @@
-import Board, {ShipCounts, SpaceCoords, Spaces} from "./Board";
-import PossibleSpaces from "./enums/PossibleSpaces";
+import Board, {PossibleSpace, ShipCounts, SpaceCoords, Spaces} from "./Board";
 import ShipTypes from "./enums/ShipTypes";
 
 /** A player in the game */
@@ -44,7 +43,7 @@ class Player {
     this._board.set(type, spaces)
   }
 
-  move(space: PossibleSpaces) {
+  move(space: PossibleSpace) {
     return this._board.move(space)
   }
 }
