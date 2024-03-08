@@ -75,19 +75,24 @@ class Board {
     this._ships[type] = spaces
   }
 
-  move(space: PossibleSpaces) {
+  move(space: PossibleSpaces): SpaceState {
     let [letter, number] = Board.parseSpace(space)
+    let result = SpaceState.MISS
+    let done = false
 
     for(let ship of Object.keys(this._ships)) {
+      if (done) continue
+      
       if (this._ships[ship].includes(space)) {
         this._ships[ship] = this._ships[ship].filter((s: PossibleSpaces) => s !== space)
-        this._spaces[letter][number] = SpaceState.HIT
-
-        return
+        result = SpaceState.HIT
+        done = true
       }
     }
 
-    this._spaces[letter][number] = SpaceState.MISS
+    this._spaces[letter][number] = result
+
+    return result
   }
 }
 

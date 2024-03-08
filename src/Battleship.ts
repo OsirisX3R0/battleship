@@ -64,7 +64,7 @@ class Battleship extends EventEmitter {
         // It's player 1 turn
         if (this._state === 'PLAYER2_TURN'){
           this._state = GameState.PLAYER1_TURN
-          this.emit('turn:player', 1)
+          this.emit('turn:player:start', 1)
     
           break
         }
@@ -72,7 +72,7 @@ class Battleship extends EventEmitter {
         // It's player 2 turn
         if (this._state === 'PLAYER1_TURN'){
           this._state = GameState.PLAYER2_TURN
-          this.emit('turn:player', 2)
+          this.emit('turn:player:start', 2)
     
           break
         }
@@ -82,7 +82,7 @@ class Battleship extends EventEmitter {
         if (this._players.allShipsSet){
           this._state = GameState.PLAYER1_TURN
           this.emit('set:allships')
-          this.emit('turn:player', 1)
+          this.emit('turn:player:start', 1)
         }
 
         break
@@ -141,10 +141,12 @@ class Battleship extends EventEmitter {
    */
   move(player: PlayerNumber, space: PossibleSpaces) {
     const attackingPlayer = player === 1 ? 2 : 1
-    
-    this._players.get(player).move(space)
 
-    this.emit("turn:player:done", attackingPlayer)
+    this.emit('turn:player:attack', attackingPlayer, space)
+    
+    let result = this._players.get(player).move(space)
+
+    this.emit("turn:player:done", result, attackingPlayer, space)
 
     this.refreshState()
   }

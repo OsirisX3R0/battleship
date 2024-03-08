@@ -45,7 +45,7 @@ class Player {
   }
 
   move(space: PossibleSpaces) {
-    this._board.move(space)
+    return this._board.move(space)
   }
 }
 

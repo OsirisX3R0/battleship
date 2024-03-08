@@ -1,7 +1,7 @@
 enum SpaceState {
-  EMPTY,
-  HIT,
-  MISS
+  EMPTY = 'EMPTY',
+  HIT = 'HIT',
+  MISS = 'MISS'
 }
 
 export default SpaceState
