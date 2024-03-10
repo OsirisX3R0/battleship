@@ -4,6 +4,7 @@ import SpaceState from "./enums/SpaceState"
 export type RowLetter = 'A' | 'B' | 'C' | 'D' | 'E' | 'F' | 'G' | 'H' | 'I' | 'J'
 export type ColumnNumber = '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9' | '10'
 export type PossibleSpace = `${RowLetter}${ColumnNumber}`
+export type ParsedSpace = [RowLetter, ColumnNumber]
 export type Row = {
   [key in ColumnNumber]?: SpaceState
 }
@@ -26,6 +27,10 @@ class Board {
   private _spaces: Spaces
   /** The players ships */
   private _ships: Ships
+  /** Possible row letters */
+  static possibleRows: RowLetter[] = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J']
+  /** Possible column numbers */
+  static possibleCols: ColumnNumber[] = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10']
 
   /** Generates a fresh board */
   static generateEmptyBoard() {
@@ -43,8 +48,8 @@ class Board {
     return board
   }
 
-  static parseSpace(space: PossibleSpace) {
-    return [space.substring(0, 1), space.substring(1)]
+  static parseSpace(space: PossibleSpace): ParsedSpace {
+    return [space.substring(0, 1) as RowLetter, space.substring(1) as ColumnNumber]
   }
 
   /** Creates an instance of `Board` */
@@ -78,8 +83,10 @@ class Board {
   check(space: PossibleSpace) {
     let [letter, number] = Board.parseSpace(space)
     if (
+      !Board.possibleRows.includes(letter) ||
+      !Board.possibleCols.includes(number) ||
       letter < 'A' || letter > 'J' ||
-      number < '1' || number > '10'
+      +number < 1 || +number > 10
     ) {
       throw new Error('Invalid space; must be [A-J][1-10]')
     }

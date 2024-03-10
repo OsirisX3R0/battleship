@@ -152,7 +152,7 @@ class Battleship extends EventEmitter {
 
     this.refreshState()
     } catch (err) {
-      throw err
+      this.emit('error', err)
     }
   }
 
